@@ -1,0 +1,23 @@
+use Final
+db.createCollection("Student")
+db.Student.insertOne({Name:"Ganesh",Class:"TE",Address:"Baramati",Age:20,Fees:20000})
+
+db.Student.insertMany([{Name:"Rohan",Class:"SE",Address:"Latur",Age:18,Fees:50000},{Name:"Tushar",Class:"SE",Address:"Pune",Age:18,Fees:40000},{Name:"Suraj",Class:"BE",Address:"Mumbai",Age:21,Fees:50000}])
+db.Student.insertOne({Name:"Mahesh",Class:"TE",Address:"Swargate",Age:19,Fees:50000})
+
+
+db.Student.aggregate({$match:{Class:"SE"}},{$count:"The total student in SE:"})
+
+
+db.Student.aggregate([{$group:{_id:"$Class",totalStudents:{$sum:1},MaxAge:{$max:"$Age"}}}])
+
+
+db.Student.aggregate([{$match:{Age:{$gt:20}}}])
+
+
+db.Student.aggregate([{$sort:{Age:1}}])
+
+
+db.Student.createIndex({"Name":1})
+db.Student.getIndexes()
+db.Student.dropIndex({"Name":1})

@@ -1,0 +1,14 @@
+create table Areas(Radius float, Area float(6));
+
+delimiter $$
+create procedure calc_area(IN r FLOAT)
+BEGIN
+	declare radiusBound condition for sqlstate '45000';
+	if(r>9 || r<5) then
+	signal sqlstate '45000' set message_text='radius is not between 5 and 9';
+      else insert into Areas values(r, 3.14*r*r);
+	end if;
+END$$
+DELIMITER ;
+call calc_area(6);
+select * from Areas;

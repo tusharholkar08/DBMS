@@ -1,0 +1,28 @@
+create table stud_marks(roll_no int primary key, name char(10), total_marks int);
+insert into stud_marks values(1,"Ganesh",1000),(2,"Rohan",1300),(3,"Suraj",500),(4,"Rajesh",890),(5,"Shree",950);
+create table result (roll_no int, name char(30), class char(40));
+
+delimiter //
+create procedure proc_grade(in marks int, out class varchar(40))
+begin
+if marks<=1500 and marks>=990 then set class='Distinction';
+elseif marks<=989 and marks>=900 then set class='First Class';
+elseif marks<=899 and marks>=825 then set class='Higher Second Class';
+elseif marks < 825 then set class ='Fail';
+end if;
+end //
+
+create function find_result(roll_in int) returns int deterministic
+begin
+declare fmarks int;
+declare grade varchar(10);
+declare stud_name varchar(10);
+select total_marks,name into fmarks, stud_name from stud_marks where stud_marks.roll_no=roll_in;
+call proc_grade(fmarks,@grade);
+insert into result values(roll_in,stud_name, @grade);
+return roll_in; 
+end //
+
+delimiter ;
+select find_result(1)//
+

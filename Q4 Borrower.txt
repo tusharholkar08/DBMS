@@ -1,0 +1,29 @@
+create table Borrower(Roll_no int,Name varchar(20),DateofIssue date,NameofBook varchar(20),Status varchar(20));
+insert into Borrower values(1,"Ganesh","2022-10-04","DBMS","I");
+insert into Borrower values(2,"Rohan","2022-11-04","CNS","I");
+insert into Borrower values(3,"Shubham","2022-11-11","OOP","I");
+insert into Borrower values(4,"Tushar","2022-09-11","SPOS","I");
+
+create table Fine(Roll_no int,Returned_Date date,Amt int);
+
+delimiter //
+create procedure fine_calc(in roll_no int, in book varchar(20))
+begin
+declare i_date date;
+declare diff int;
+declare fine_amt int;
+declare exit handler for sqlexception select "Table Not Found";
+select DateofIssue into i_date from Borrower where Roll_no = roll_no and NameofBook = book; 
+select datediff(curdate(),i_date) into diff;
+if (diff>15 and diff<=30) then
+set fine_amt = (diff-15)*5;
+insert into Fine values(roll_no,curdate(),fine_amt);
+elseif (diff>30) then
+set fine_amt = 15*5 + (diff-30)*50;
+insert into Fine values(roll_no,curdate(),fine_amt);
+end if;
+update Borrower set Status = "R" where Roll_no=roll_no and NameofBook=book;
+end //
+
+delimiter ;
+call fine_calc(1,"DBMS");

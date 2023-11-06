@@ -1,0 +1,48 @@
+create database DBMS1;
+use DBMS1;
+create table salesman (salesman_id int primary key,name varchar(20),city varchar(20),commission float);
+create table Customer(Customer_id int primary key,Customer_name varchar(20),city varchar(20),grade varchar(20),FOREIGN KEY salesman_id)REFERENCES salesman(salesman_id));
+create table Customer(Customer_id int primary key,Customer_name varchar(20),city varchar(20),grade varchar(20),FOREIGN KEY (salesman_id) REFERENCES salesman(salesman_id));
+create table Customer(Customer_id int primary key,Customer_name varchar(20),city varchar(20),grade varchar(20),salesman_id int,FOREIGN KEY (salesman_id) REFERENCES salesman(salesman_id));
+create table order(order_no int,purchase_amt int,order_date date,salesman_id int,Customer_id int,FOREIGN KEY (salesman_id) REFERENCES salesman(salesman_id),FOREIGN KEY (Customer_id) REFERENCES customer(Customer_id));
+create table orders(order_no int,purchase_amt int,order_date date,salesman_id int,Customer_id int,FOREIGN KEY (salesman_id) REFERENCES salesman(salesman_id),FOREIGN KEY (Customer_id) REFERENCES customer(Customer_id));
+
+insert into salesman (5001,"Maddy","New York",0.15);
+insert into salesman values(5001,"Maddy","New York",0.15);
+insert into salesman values(5002,"Nandu","Paris",0.13);
+insert into salesman values(5003,"Ganesh","Pune",0.11);
+insert into salesman values(5005,"Ishant","Paris",0.14);
+insert into salesman values(5007,"Prasad","pune",0.12);
+insert into salesman values(5006,"Prasad","San Jose",0.11);
+
+insert into customer values(3002,"Sanket","New York",100,5001);
+insert into customer values(3002,"Guru","New York",200,5001);
+insert into customer values(3007,"Guru","New York",200,5001);
+insert into customer values(3005,"Sahil","California",200,5002);
+insert into customer values(3008,"amit","London",300,5002);
+insert into customer values(3004,"Yash","Paris",300,5006);
+insert into customer values(3009,"Vijay","Berlin",100,5003);
+insert into customer values(3003,"Gapat","Moscov",200,5006);
+
+insert into orders values(70001,150,"2022-10-05",5001,3003);
+insert into orders values(70009,270,"2022-10-10",5002,3001);
+insert into orders values(70009,270,"2022-10-10",5002,3002);
+insert into orders values(70002,110,"2022-10-17",5007,3005);
+insert into orders values(70008,947,"2022-10-16",5006,3007);
+insert into orders values(70007,5760,"2022-10-29",5007,3009);
+insert into orders values(70005,500,"2022-10-17",5007,3005);
+insert into orders values(70004,9000,"2022-10-29",5007,3009);
+
+select distinct salesman_id from orders;
+select name,city from salesman where city="Paris";
+select * from customer where grade=200;
+select order_no,order_date,purchase_amt from orders where salesman_id=5001;
+select * from customer where customer_name  %n;
+select * from customer where customer_name like %n;
+select * from customer where customer_name like "%n";
+update salesman set city="pune" where city="pune";
+delete from customer where customer_name="amit";
+select SUM(purchase_amt),order_no from orders;
+select customer_id,Max purchase_amt,order_date from orders order by customer_id,order_date;
+select customer_id,Max(purchase_amt),order_date from orders order by customer_id,order_date;
+select * from customer where city="New York" or Not grade<100;

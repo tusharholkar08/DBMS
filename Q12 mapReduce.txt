@@ -1,0 +1,10 @@
+use mydb5;
+db.createCollection("StudentMarks")
+db.StudentMarks.insert({Roll_No:1,Name:"Raj",Class:"TE-B",Age:20,marks:90})
+db.StudentMarks.insert([{Roll_No:2,Name:"Suraj",Class:"TE-A",Age:21,marks:80},{Roll_No:3,Name:"Ganesh",Class:"TE-B",Age:20,marks:70},{Roll_No:4,Name:"Rohan",Class:"TE-A",Age:21,marks:90}])
+
+db.StudentMarks.find().pretty();
+var map=function(){emit(this.Age,this.marks)}
+var reduce=function(Age,marks){return Array.sum(marks)}
+db.StudentMarks.mapReduce(map,reduce,{out:"Total_Marks"})
+db.Total_Marks.find().pretty();

@@ -1,0 +1,9 @@
+use dell;
+db.createCollection("Student");
+db.Student.insert({rollno:1,name:"Vijay",class:"TE-B",address:"Katraj",age:20,fees:1000})
+db.Student.insert([{rollno:2,name:"Summit",class:"TE-C",address:"Camp",age:21,fees:2000},{rollno:3,name:"John",class:"TE-A",address:"Kondhwa",age:20,fees:10000}])
+db.Student.find().pretty();
+db.Student.update({name : "Summit"},{$set :{age:19}})
+db.Student.find().pretty();
+db.Student.remove({name:"Vijay"})
+db.Student.find().pretty();

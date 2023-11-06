@@ -1,0 +1,29 @@
+create table Library(book_id int primary key,book_name varchar(20),price int);
+create table Library_Audit(book_id int,book_name varchar(20),price int,action varchar(20));
+insert into Library values(1,"DBMS",200),(2,"CNS",100),(3,"SPOS",150),(4,"TOC",110);
+
+delimiter //
+create trigger update_trigger after update on Library for each row
+begin
+insert into Library_Audit values(old.book_id,old.book_name,old.price,'Updated');
+end; //
+
+create trigger insert_trig after insert on Library for each row
+begin
+insert into Library_Audit values(new.book_id,new.book_name,new.price,"Inserted");
+end; //
+
+create trigger delete_trig after delete on Library for each row
+begin
+insert into library_Audit values(old.book_id,old.book_name,old.price,"Deleted");
+end; //
+
+delimiter ;
+select * from library; //
+select * from library_audit;
+insert into library values(5,"SPM",30);
+update library set price=400 where book_id=1;
+select * from library_audit;
+delete from library where book_id=3;
+select * from library_audit;
+
